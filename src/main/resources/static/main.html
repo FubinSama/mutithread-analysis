@@ -1,0 +1,127 @@
+<html>
+  <head>
+    <title>Java多线程程序运行轨迹挖掘与分析</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="layui-v2.5.6/layui/css/layui.css">
+    <script src="layui-v2.5.6/layui/layui.js"></script>
+    <script src="src/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/main.js"></script>
+  </head>
+  <body class="layui-layout-body">
+    <div class="layui-layout-admin">
+      <div class="layui-header" style="background: lightblue; text-align: center;">
+        <div style="font-size: 30px; padding-top: 10px;">
+          JAVA多线程程序运行轨迹与分析
+        </div>
+      </div>
+      <div class="layui-side layui-bg-black" id="#nav">
+        <ul class='layui-nav layui-nav-tree'>
+          <li class='layui-nav-item layui-nav-itemed'>
+            <a href='#' id="addProcess">添加新的程序</a>
+          </li>
+          <li class='layui-nav-item layui-nav-itemed'>
+            <a href="#" id="viewSource">查看当前程序源代码</a>
+          </li>
+          <li class='layui-nav-item layui-nav-itemed'>
+            <a href="#" id="analysis">分析当前程序变迁对</a>
+          </li>
+          <li class='layui-nav-item layui-nav-itemed'>
+            <a href="#" id="analysis2">分析当前程序语句对</a>
+          </li>
+          <li class='layui-nav-item layui-nav-itemed' id="child">
+            <a href='javascript:;'>查看已有程序</a>
+          </li>
+        </ul>
+      </div>
+      <div class="layui-body">
+        <div class="layui-tab" lay-filter="demo">
+          <ul class="layui-tab-title">
+            <li class="layui-this">首页</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+              <div style="padding: 15px;" id="main">
+                <main>
+                  <span>欢迎使用</span>
+                </main>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-footer">
+        <div style="text-align: center;">
+          <span style="color: red;">&copyright create by wfb</span>
+        </div>
+      </div>
+    </div>
+
+    <div hidden>
+      <form class="layui-form" id="fm">
+        <div class="layui-form-item">
+          <label class="layui-form-label">请选择要分析的变量</label>
+          <div class="layui-input-block">
+            <select name="variable" id="variable" lay-filter="variable"></select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">请选择一个读或写变迁</label>
+          <div class="layui-input-block">
+            <select name="read" id="read" lay-filter="read"></select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">请选择一个写变迁</label>
+          <div class="layui-input-block">
+            <select name="write" id="write" lay-filter="write"></select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block" style="padding-left: 50px;">
+            <button class="layui-btn" id="isConcurrent" lay-filter="isConcurrent">分析数据竞争</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div hidden>
+      <form class="layui-form" id="fm2">
+        <div class="layui-form-item">
+          <label class="layui-form-label">请选择要分析的变量</label>
+          <div class="layui-input-block">
+            <select name="variable" id="variable2" lay-filter="variable2"></select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">请选择一个读或写语句的行号</label>
+          <div class="layui-input-block">
+            <select name="read" id="read2" lay-filter="read2"></select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">请选择一个写语句的行号</label>
+          <div class="layui-input-block">
+            <select name="write" id="write2" lay-filter="write2"></select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <div class="layui-input-block" style="padding-left: 50px;">
+            <button class="layui-btn" id="isConcurrent2" lay-filter="isConcurrent2">分析数据竞争</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div hidden id="upload">
+      <div style="text-align: center; font-size: 18px;">
+        请选择一个以<span style="color: red;">.java</span>后缀结尾的文件进行上传
+      </div>
+      <div style="margin: 60px 140px;">
+        <button type="button" class="layui-btn" id="multipartFile">
+          <i class="layui-icon">&#xe67c;</i>上传java文件
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
