@@ -71,9 +71,12 @@ layui.use(['element', 'table', 'form', 'upload'], () => {
                 if (res.code == "success") {
                     layer.close(index);
                     layer.msg("上传成功！");
-                    //TODO 刷新
-                    // window.location.reload();
-                } else layer.msg(res.msg);
+
+                } else {
+                    layer.msg(res.msg);
+                }
+                layer.close(index);
+                setTimeout("window.location.reload()", 1000);
             },
             error: function () {
                 layer.close(index);

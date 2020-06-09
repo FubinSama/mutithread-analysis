@@ -5,6 +5,6 @@
         select * from file;
     </select>
     <insert id="add" parameterType="com.wfb.mutithreadanalysis.model.ClassFile">
-        insert into file values(NULL, #{title}, #{href});
+        insert into file values(NULL, #{title}, #{href}) on duplicate key update id = values(id), title = values(title), href = values(href);
     </insert>
 </mapper>

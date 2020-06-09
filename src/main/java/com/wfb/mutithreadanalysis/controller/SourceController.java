@@ -29,20 +29,6 @@ public class SourceController {
     @GetMapping("/srcCode/{path}")
     public void generateSrc(@PathVariable("path") String path, HttpServletResponse response) {
         try (PrintWriter pw = response.getWriter()) {
-//            pw.println("<!DOCTYPE html>");
-//            pw.println("<html lang=\"en\">");
-//            pw.println("<head>");
-//            pw.println("<meta charset=\"UTF-8\">");
-//            pw.println("<link href=\"/layui-v2.5.6/layui/css/layui.css\">");
-//            pw.println("<script type=\"text/javascript\" src=\"/layui-v2.5.6/layui/layui.js\"></script>");
-//            pw.println("<script type=\"text/javascript\">");
-//            pw.println("layui.use('code', function () {");
-//            pw.println("layui.code();");
-//            pw.println("});");
-//            pw.println("</script>");
-//            pw.println("</head>");
-//            pw.println("<body class=\"layui-body\">");
-//            pw.println("<pre class=\"layui-code\" lay-title=\"" + path.replaceAll("_", "/") + ".java" + "\" style=\"margin-top: 50px;\" lay-skin=\"notepad\" lay-about=\"false\" >");
             pw.println("<!DOCTYPE html>");
             pw.println("<html lang=\"en\">");
             pw.println("<head>");
@@ -56,7 +42,7 @@ public class SourceController {
             File file = new File(calfuzzerPath + "test/" + path.replaceAll("_", "/") + ".java");
             try(Scanner sc = new Scanner(file)) {
                 while (sc.hasNextLine()) {
-                    pw.println(sc.nextLine());
+                    pw.println(sc.nextLine().replaceAll("<", "&lt;").replaceAll(">", "&gt;"));
                 }
             }
             pw.println("</pre>");

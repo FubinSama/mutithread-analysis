@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -22,7 +23,7 @@ public class FileUploadController {
     FileService fileService;
 
     @PostMapping("/upload")
-    public ResponseBean upload(@RequestParam("file") MultipartFile multipartFile) {
+    public ResponseBean upload(@RequestParam("file") MultipartFile multipartFile, HttpSession session) {
         if (multipartFile == null) return ResponseBean.error("服务器无法接收该文件，请重试！");
         String multipartFileName = multipartFile.getOriginalFilename();
         String[] strs = multipartFileName.split("\\.");
@@ -31,16 +32,18 @@ public class FileUploadController {
         }
         String packagePath = "";
         try (Scanner sc = new Scanner(multipartFile.getInputStream())){
-            String firstLine = sc.nextLine().trim().substring(8).trim();
-            if (firstLine.contains("package"))
-                packagePath = firstLine.substring(0, firstLine.length() - 1).replaceAll(".", "/");
+            String firstLine = sc.nextLine().trim();
+            if (firstLine.contains("package")) {
+                firstLine = firstLine.substring(8).trim();
+                packagePath = firstLine.substring(0, firstLine.length() - 1).replaceAll("\\.", "/");
+            }
         } catch (Exception e) {
             ResponseBean.error("无法读取该文件！");
         }
         if (packagePath.length() != 0) packagePath += "/";
         String fileName = "test/" + packagePath + multipartFileName;
         File file = new File(Paramters.CALFUZZER_PATH + fileName);
-        file.mkdir();
+        file.mkdirs();
         System.out.println(file.getAbsolutePath());
         try {
             multipartFile.transferTo(file);
@@ -65,8 +68,9 @@ public class FileUploadController {
             if (!isExit) return ResponseBean.error("程序解析时间超过100s，请保证程序中不存在死循环！");
             if (p.exitValue() != 0) return ResponseBean.error("该程序无法被解析！");
 
-            fileService.add(new ClassFile(0, className, className.replaceAll("//.", "_")));
+            fileService.add(new ClassFile(0, className, className.replaceAll("\\.", "_")));
 
+            session.invalidate();
             return ResponseBean.success();
         } catch (Exception e) {
             e.printStackTrace();
